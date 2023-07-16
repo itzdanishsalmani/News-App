@@ -2,11 +2,15 @@ package com.example.newsfetch
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest as JsonObjectRequest
+
 
 class MainActivity : AppCompatActivity(), NewsItemClicked {
+    private  lateinit var mAdapter: NewsListAdapter
+    //mAdapter is member function which is accessible to everywhere
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -15,22 +19,41 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val items = fetchData()
-        val adapter = NewsListAdapter(items,this) //items in adapter
+        fetchData()
+        mAdapter = NewsListAdapter(this) //items in adapter
 
         //linking adapter and recyclerview
-        recyclerView.adapter = adapter
+        recyclerView.adapter = mAdapter
     }
 
-    private fun fetchData():ArrayList<String>{
-        val list = ArrayList<String>()
-        for (i in 0 until 100 ){
-            list.add("Item $i")
-        }
-        return list
+    private fun fetchData(){
+        val url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=c744ac70a5c04a1c89860dcc11f55246"
+       val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET,
+            url,
+            null,
+           {
+               val newsJsonArray = it.getJSONArray("articles")// extract from API articles is Array
+               val newsArray = ArrayList<News>()
+               for (i in 0 until newsJsonArray.length()){
+                   val newsJsonObject = newsJsonArray.getJSONObject(i)
+                   val news=News(
+                       newsJsonObject.getString("title"),
+                               newsJsonObject.getString("author"),
+                               newsJsonObject.getString("url"),
+                               newsJsonObject.getString("urlToImage")
+                   )
+                   newsArray.add(news)
+               }
+               mAdapter.updateNews(newsArray) //passing newsArray into Adapter
+           },
+           {
+
+               }
+        )
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
     //functions of interface
-    override fun onItemClicked(item: String) {
-        Toast.makeText(this,"Clicked item is $item",Toast.LENGTH_LONG).show()
+    override fun onItemClicked(item: News) {
     }
 }
