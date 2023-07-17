@@ -35,8 +35,8 @@ class NewsListAdapter(private val listener:NewsItemClicked): RecyclerView.Adapte
         //bind data with holder and current items
         val currentItem=items[position]
         holder.titleView.text = currentItem.title
-        holder.author.text = currentItem.author
-        Glide.with(holder.itemView.context).load(currentItem.imageUrl).into(holder.image)
+        holder.publishedAt.text = currentItem.publishedAt
+        Glide.with(holder.itemView.context).load(currentItem.image).into(holder.image)
     }
     fun updateNews(updateNews:ArrayList<News>){   //for passing News data with function to adapter
         items.clear()
@@ -52,7 +52,7 @@ class NewsViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
     //items of news.xml is here and then convert into View in Adapter
     val titleView:TextView = itemView.findViewById<TextView>(R.id.title)
     val image:ImageView = itemView.findViewById<ImageView>(R.id.image)
-    val author:TextView = itemView.findViewById<TextView>(R.id.author)
+    val publishedAt:TextView = itemView.findViewById<TextView>(R.id.publishedAt)
 }
 
 //instance of interface is passed on NewsListAdapter by val listener

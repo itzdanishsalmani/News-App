@@ -19,16 +19,16 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        fetchData()
         mAdapter = NewsListAdapter(this) //items in adapter
 
         //linking adapter and recyclerview
         recyclerView.adapter = mAdapter
-    }
 
+        fetchData()
+    }
     private fun fetchData(){
-        val url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=c744ac70a5c04a1c89860dcc11f55246"
-       val jsonObjectRequest = JsonObjectRequest(
+       val url = "https://gnews.io/api/v4/search?q=example&lang=en&country=in&max=50&apikey=6612c78e62501f50ddb9d420ad9c78f1"
+        val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET,
             url,
             null,
@@ -39,9 +39,9 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
                    val newsJsonObject = newsJsonArray.getJSONObject(i)
                    val news=News(
                        newsJsonObject.getString("title"),
-                               newsJsonObject.getString("author"),
+                               newsJsonObject.getString("publishedAt"),
                                newsJsonObject.getString("url"),
-                               newsJsonObject.getString("urlToImage")
+                               newsJsonObject.getString("image")
                    )
                    newsArray.add(news)
                }
@@ -49,10 +49,12 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
            },
            {
 
-               }
+           }
         )
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
+
+
     //functions of interface
     override fun onItemClicked(item: News) {
     }
