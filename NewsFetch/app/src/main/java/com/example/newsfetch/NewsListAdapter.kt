@@ -41,11 +41,27 @@ class NewsListAdapter(private val listener:NewsItemClicked): RecyclerView.Adapte
     fun updateNews(updateNews:ArrayList<News>){   //for passing News data with function to adapter
         items.clear()
         items.addAll(updateNews)
-
         notifyDataSetChanged()
-
     }
 
+
+//    fun updateNews(updatedNews: ArrayList<News>) {
+//        val previousSize = items.size
+//        items.clear()
+//        items.addAll(updatedNews)
+//        val newSize = items.size
+//
+//        if (previousSize == newSize) {
+//            notifyDataSetChanged()
+//        } else {
+//            // Update only the affected items
+//            if (previousSize > newSize) {
+//                notifyItemRangeRemoved(newSize, previousSize - newSize)
+//            } else {
+//                notifyItemRangeInserted(previousSize, newSize - previousSize)
+//            }
+//        }
+//    }
 }
 //viewHolder is passed on Adapter
 class NewsViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
