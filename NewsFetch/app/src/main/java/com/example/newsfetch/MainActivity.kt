@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
         //linking adapter and recyclerview
         recyclerView.adapter = mAdapter
 
-
     }
     private fun fetchData(){
         //val url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=10d82ec53a17473f8717dc0465796e34"
