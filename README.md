@@ -1,5 +1,5 @@
 # News-App
-News App using Kotlin which call API to load News 
+News App using Kotlin with Volley and Glide Library  
 
 I have used the API from "https://gnews.io" website but API is not updating so the same news is showing
 
